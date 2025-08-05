@@ -2,6 +2,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 import torch
 
+
 class Autoencoder(nn.Module):
     def __init__(self):
         super(Autoencoder, self).__init__()
@@ -14,11 +15,17 @@ class Autoencoder(nn.Module):
             nn.ReLU(True),
         )
         self.decoder = nn.Sequential(
-            nn.ConvTranspose2d(32, 16, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(
+                32, 16, kernel_size=3, stride=2, padding=1, output_padding=1
+            ),
             nn.ReLU(True),
-            nn.ConvTranspose2d(16, 8, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(
+                16, 8, kernel_size=3, stride=2, padding=1, output_padding=1
+            ),
             nn.ReLU(True),
-            nn.ConvTranspose2d(8, 1, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(
+                8, 1, kernel_size=3, stride=2, padding=1, output_padding=1
+            ),
             nn.Sigmoid(),
         )
 
@@ -29,6 +36,7 @@ class Autoencoder(nn.Module):
         x_padded = F.pad(x, (0, new_w - orig_w, 0, new_h - orig_h))
         out = self.decoder(self.encoder(x_padded))
         return out[:, :, :orig_h, :orig_w]
+
 
 def init(m):
     if isinstance(m, nn.Linear):
